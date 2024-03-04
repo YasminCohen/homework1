@@ -1,18 +1,19 @@
 CC = gcc
-CFLAGS = -std=c11 -g
+CFLAGS = -std=c11 -g -pthread
+TARGET = q5
+SRCS = $(wildcard *.c)
+OBJS = $(SRCS:.c=.o)
 RM = rm -f
 
-.PHONY: all default clean
+.PHONY: all clean
 
-all: q5
+all: $(TARGET)
 
-default: all
-
-q5: q5.o
-	$(CC) $(CFLAGS) -pthread -o $@ $<
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
-	
+
 clean:
-	$(RM) *.o *.so q5
+	$(RM) $(OBJS) $(TARGET)
